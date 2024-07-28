@@ -504,8 +504,8 @@ pub fn process_output_system(
         }
 
         let mut set_icon = || {
-            context.window.cursor.icon = egui_to_winit_cursor_icon(platform_output.cursor_icon)
-                .unwrap_or(bevy::window::NativeCursorIcon::Default.into());
+            *context.cursor = egui_to_winit_cursor_icon(platform_output.cursor_icon)
+                .unwrap_or(bevy::window::SystemCursorIcon::Default.into());
         };
 
         #[cfg(windows)]
@@ -547,42 +547,44 @@ pub fn process_output_system(
     }
 }
 
-fn egui_to_winit_cursor_icon(cursor_icon: egui::CursorIcon) -> Option<bevy::window::CursorIcon> {
+fn egui_to_winit_cursor_icon(
+    cursor_icon: egui::CursorIcon,
+) -> Option<bevy::render::view::cursor::CursorIcon> {
     match cursor_icon {
-        egui::CursorIcon::Default => Some(bevy::window::NativeCursorIcon::Default.into()),
-        egui::CursorIcon::PointingHand => Some(bevy::window::NativeCursorIcon::Pointer.into()),
-        egui::CursorIcon::ResizeHorizontal => Some(bevy::window::NativeCursorIcon::EwResize.into()),
-        egui::CursorIcon::ResizeNeSw => Some(bevy::window::NativeCursorIcon::NeswResize.into()),
-        egui::CursorIcon::ResizeNwSe => Some(bevy::window::NativeCursorIcon::NwseResize.into()),
-        egui::CursorIcon::ResizeVertical => Some(bevy::window::NativeCursorIcon::NsResize.into()),
-        egui::CursorIcon::Text => Some(bevy::window::NativeCursorIcon::Text.into()),
-        egui::CursorIcon::Grab => Some(bevy::window::NativeCursorIcon::Grab.into()),
-        egui::CursorIcon::Grabbing => Some(bevy::window::NativeCursorIcon::Grabbing.into()),
-        egui::CursorIcon::ContextMenu => Some(bevy::window::NativeCursorIcon::ContextMenu.into()),
-        egui::CursorIcon::Help => Some(bevy::window::NativeCursorIcon::Help.into()),
-        egui::CursorIcon::Progress => Some(bevy::window::NativeCursorIcon::Progress.into()),
-        egui::CursorIcon::Wait => Some(bevy::window::NativeCursorIcon::Wait.into()),
-        egui::CursorIcon::Cell => Some(bevy::window::NativeCursorIcon::Cell.into()),
-        egui::CursorIcon::Crosshair => Some(bevy::window::NativeCursorIcon::Crosshair.into()),
-        egui::CursorIcon::VerticalText => Some(bevy::window::NativeCursorIcon::VerticalText.into()),
-        egui::CursorIcon::Alias => Some(bevy::window::NativeCursorIcon::Alias.into()),
-        egui::CursorIcon::Copy => Some(bevy::window::NativeCursorIcon::Copy.into()),
-        egui::CursorIcon::Move => Some(bevy::window::NativeCursorIcon::Move.into()),
-        egui::CursorIcon::NoDrop => Some(bevy::window::NativeCursorIcon::NoDrop.into()),
-        egui::CursorIcon::NotAllowed => Some(bevy::window::NativeCursorIcon::NotAllowed.into()),
-        egui::CursorIcon::AllScroll => Some(bevy::window::NativeCursorIcon::AllScroll.into()),
-        egui::CursorIcon::ZoomIn => Some(bevy::window::NativeCursorIcon::ZoomIn.into()),
-        egui::CursorIcon::ZoomOut => Some(bevy::window::NativeCursorIcon::ZoomOut.into()),
-        egui::CursorIcon::ResizeEast => Some(bevy::window::NativeCursorIcon::EResize.into()),
-        egui::CursorIcon::ResizeSouthEast => Some(bevy::window::NativeCursorIcon::SeResize.into()),
-        egui::CursorIcon::ResizeSouth => Some(bevy::window::NativeCursorIcon::SResize.into()),
-        egui::CursorIcon::ResizeSouthWest => Some(bevy::window::NativeCursorIcon::SwResize.into()),
-        egui::CursorIcon::ResizeWest => Some(bevy::window::NativeCursorIcon::WResize.into()),
-        egui::CursorIcon::ResizeNorthWest => Some(bevy::window::NativeCursorIcon::NwResize.into()),
-        egui::CursorIcon::ResizeNorth => Some(bevy::window::NativeCursorIcon::NResize.into()),
-        egui::CursorIcon::ResizeNorthEast => Some(bevy::window::NativeCursorIcon::NeResize.into()),
-        egui::CursorIcon::ResizeColumn => Some(bevy::window::NativeCursorIcon::ColResize.into()),
-        egui::CursorIcon::ResizeRow => Some(bevy::window::NativeCursorIcon::RowResize.into()),
+        egui::CursorIcon::Default => Some(bevy::window::SystemCursorIcon::Default.into()),
+        egui::CursorIcon::PointingHand => Some(bevy::window::SystemCursorIcon::Pointer.into()),
+        egui::CursorIcon::ResizeHorizontal => Some(bevy::window::SystemCursorIcon::EwResize.into()),
+        egui::CursorIcon::ResizeNeSw => Some(bevy::window::SystemCursorIcon::NeswResize.into()),
+        egui::CursorIcon::ResizeNwSe => Some(bevy::window::SystemCursorIcon::NwseResize.into()),
+        egui::CursorIcon::ResizeVertical => Some(bevy::window::SystemCursorIcon::NsResize.into()),
+        egui::CursorIcon::Text => Some(bevy::window::SystemCursorIcon::Text.into()),
+        egui::CursorIcon::Grab => Some(bevy::window::SystemCursorIcon::Grab.into()),
+        egui::CursorIcon::Grabbing => Some(bevy::window::SystemCursorIcon::Grabbing.into()),
+        egui::CursorIcon::ContextMenu => Some(bevy::window::SystemCursorIcon::ContextMenu.into()),
+        egui::CursorIcon::Help => Some(bevy::window::SystemCursorIcon::Help.into()),
+        egui::CursorIcon::Progress => Some(bevy::window::SystemCursorIcon::Progress.into()),
+        egui::CursorIcon::Wait => Some(bevy::window::SystemCursorIcon::Wait.into()),
+        egui::CursorIcon::Cell => Some(bevy::window::SystemCursorIcon::Cell.into()),
+        egui::CursorIcon::Crosshair => Some(bevy::window::SystemCursorIcon::Crosshair.into()),
+        egui::CursorIcon::VerticalText => Some(bevy::window::SystemCursorIcon::VerticalText.into()),
+        egui::CursorIcon::Alias => Some(bevy::window::SystemCursorIcon::Alias.into()),
+        egui::CursorIcon::Copy => Some(bevy::window::SystemCursorIcon::Copy.into()),
+        egui::CursorIcon::Move => Some(bevy::window::SystemCursorIcon::Move.into()),
+        egui::CursorIcon::NoDrop => Some(bevy::window::SystemCursorIcon::NoDrop.into()),
+        egui::CursorIcon::NotAllowed => Some(bevy::window::SystemCursorIcon::NotAllowed.into()),
+        egui::CursorIcon::AllScroll => Some(bevy::window::SystemCursorIcon::AllScroll.into()),
+        egui::CursorIcon::ZoomIn => Some(bevy::window::SystemCursorIcon::ZoomIn.into()),
+        egui::CursorIcon::ZoomOut => Some(bevy::window::SystemCursorIcon::ZoomOut.into()),
+        egui::CursorIcon::ResizeEast => Some(bevy::window::SystemCursorIcon::EResize.into()),
+        egui::CursorIcon::ResizeSouthEast => Some(bevy::window::SystemCursorIcon::SeResize.into()),
+        egui::CursorIcon::ResizeSouth => Some(bevy::window::SystemCursorIcon::SResize.into()),
+        egui::CursorIcon::ResizeSouthWest => Some(bevy::window::SystemCursorIcon::SwResize.into()),
+        egui::CursorIcon::ResizeWest => Some(bevy::window::SystemCursorIcon::WResize.into()),
+        egui::CursorIcon::ResizeNorthWest => Some(bevy::window::SystemCursorIcon::NwResize.into()),
+        egui::CursorIcon::ResizeNorth => Some(bevy::window::SystemCursorIcon::NResize.into()),
+        egui::CursorIcon::ResizeNorthEast => Some(bevy::window::SystemCursorIcon::NeResize.into()),
+        egui::CursorIcon::ResizeColumn => Some(bevy::window::SystemCursorIcon::ColResize.into()),
+        egui::CursorIcon::ResizeRow => Some(bevy::window::SystemCursorIcon::RowResize.into()),
         egui::CursorIcon::None => None,
     }
 }

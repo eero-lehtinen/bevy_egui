@@ -773,6 +773,7 @@ pub struct EguiContextQuery {
     pub window_size: &'static mut WindowSize,
     /// [`Window`] component.
     pub window: &'static mut Window,
+    pub cursor: &'static mut bevy::render::view::cursor::CursorIcon,
 }
 
 /// Contains textures allocated and painted by Egui.
